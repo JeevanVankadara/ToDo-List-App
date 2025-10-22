@@ -1,40 +1,49 @@
-const express=require("express");
+const express = require("express");
+const router = express.Router();
+const Todo = require('./models/Todo');
 
-const router=express.Router();
-
-const {getConnectedClient}=require('./database');
-
-const getCollection=()=>{
-    const client=getConnectedClient();
-    const collection=client.db("todosdb").collection("todo");
-    return collection;
-}
-
-//GET /todos
-router.get("/todos",async (req,res)=>{
-    const collection=getCollection();
-    const todos=await collection.find({}).toArray();
-    res.status(200).json(todos);
-})
-
-//POST/todos
-router.post("/todos",async (req,res)=>{
-    const collection=getCollection();
-    const {todo}=req.body;
-
-    const newTodo=await collection.insertOne({todo,status:false});
-    
-    res.status(201).json({todo, status:false, _id:newTodo._id});
+// GET /todos
+router.get("/todos", async (req, res) => {
+    try {
+        const todos = await Todo.find();
+        res.status(200).json(todos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
-//DELETE/todos
-router.delete("/todos/:id",(req,res)=>{
-    res.status(200).json({msg:"DELETE request to /api/todos/23"});
-})
+// POST /todos
+router.post("/todos", async (req, res) => {
+    try {
+        const {todo}=req.body;
+        const newTodo=await Todo.insertOne({todo,status:false});
+        res.status(200).json(newTodo);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-//PUT/todos
-router.put("/todos/:id",(req,res)=>{
-    res.status(200).json({msg:"PUT request to /api/todos/23"});
+// DELETE /todos/:id
+router.delete("/todos/:id", async (req, res) => {
+    try {
+        const id=req.params.id;
+        const newTodo=await Todo.deleteOne({_id:id});
+        res.status(200).json(newTodo);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// PUT /todos/:id
+router.put("/todos/:id", async (req, res) => {
+    try {
+        const id=req.params.id;
+        const {status}=req.body;
+        const newTodo=await Todo.findByIdAndUpdate(id,{$set:{status:status}},{new:true});
+        res.status(200).json(newTodo);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 module.exports = router;
