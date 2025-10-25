@@ -72,3 +72,15 @@ h1, h2, h3, h4, h5, h6 {
     transform:scale(1.2);
   }
 }
+
+.form{
+  display:flex;
+  gap:0.5rem;
+  width: 50%;
+  margin:1rem auto;
+}
+
+.form_input{
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+}

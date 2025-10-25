@@ -15,15 +15,15 @@ router.get("/todos", async (req, res) => {
 // POST /todos
 router.post("/todos", async (req, res) => {
     try {
-        const {todo}=req.body;
-        if(!tode){
-            return res.status(400).json({mssg:"Error in finding the todo"});
+        let {todo} = req.body;
+        if(!todo){
+            return res.status(400).json({mssg:"Todo content is required"});
         }
 
-        todo=JSON.stringify(todo);
+        todo = (typeof todo === 'string') ? todo : JSON.stringify(todo);
 
-        const newTodo=await Todo.insertOne({todo,status:false});
-        res.status(200).json(newTodo);
+        const newTodo = await Todo.create({todo, status: false});
+        res.status(201).json(newTodo);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
