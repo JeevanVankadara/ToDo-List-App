@@ -16,6 +16,12 @@ router.get("/todos", async (req, res) => {
 router.post("/todos", async (req, res) => {
     try {
         const {todo}=req.body;
+        if(!tode){
+            return res.status(400).json({mssg:"Error in finding the todo"});
+        }
+
+        todo=JSON.stringify(todo);
+
         const newTodo=await Todo.insertOne({todo,status:false});
         res.status(200).json(newTodo);
     } catch (error) {
@@ -39,6 +45,11 @@ router.put("/todos/:id", async (req, res) => {
     try {
         const id=req.params.id;
         const {status}=req.body;
+
+        if(typeof status !=="boolean"){
+            return res.status(400).json({mssg:"Error in typeof status posting"});
+        }
+
         const newTodo=await Todo.findByIdAndUpdate(id,{$set:{status:status}},{new:true});
         res.status(200).json(newTodo);
     } catch (error) {
