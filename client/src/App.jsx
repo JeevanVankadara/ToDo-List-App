@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const App = () => {
   const [todos,setTodos]=useState([]);
-  const [content,setContent]=useState();
+  const [content,setContent]=useState("");
 
   useEffect(()=>{
     async function getTodos(){
@@ -28,6 +28,18 @@ const App = () => {
     setTodos([...todos,newTodo]);
   }
 
+  async function statusUpdate(id,currentStatus){
+    const res=await fetch(`http://localhost:5000/api/todos/${id}`,{
+      method:"PUT",
+      headers:{
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify({status:!currentStatus}),
+    });
+    const updatedTodo=await res.json();
+    setTodos(prev=>prev.map(t=>(t._id===id)? updatedTodo : t));
+  }
+
   return (
     <main className='container'>
       <h1 className='title'>Awesome ToDos</h1>
@@ -41,8 +53,8 @@ const App = () => {
           <div key={todo._id} className='todo'>
             <p>{todo.todo}</p>
             <div>
-              <button className='todo_status'>{todo.status ? "☑" : "☐"}
-
+              <button className='todo_status' onClick={()=>statusUpdate(todo._id,todo.status)}>
+                {todo.status ? "☑" : "☐"}
               </button>
             </div>
           </div>
