@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Todo from './components/Todo'; 
 
 const App = () => {
   const [todos,setTodos]=useState([]);
@@ -28,40 +29,21 @@ const App = () => {
     setTodos([...todos,newTodo]);
   }
 
-  async function statusUpdate(id,currentStatus){
-    const res=await fetch(`http://localhost:5000/api/todos/${id}`,{
-      method:"PUT",
-      headers:{
-        "Content-Type":"application/json",
-      },
-      body:JSON.stringify({status:!currentStatus}),
-    });
-    const updatedTodo=await res.json();
-    setTodos(prev=>prev.map(t=>(t._id===id)? updatedTodo : t));
-  }
-
   return (
     <main className='container'>
       <h1 className='title'>Awesome ToDos</h1>
       <form className='form' onSubmit={createTodo}>
         <input type="text" placeholder='Enter the todo...' value={content}  onChange={(e)=>(setContent(e.target.value))} className='form_input' required/>
-        <button type='submit' >Create</button>
+        <button className='form_button' type='submit' >Create</button>
       </form>
       <div className='todos'>
       {todos.length > 0 &&
         todos.map((todo) => (
-          <div key={todo._id} className='todo'>
-            <p>{todo.todo}</p>
-            <div>
-              <button className='todo_status' onClick={()=>statusUpdate(todo._id,todo.status)}>
-                {todo.status ? "☑" : "☐"}
-              </button>
-            </div>
-          </div>
+          <Todo todo={todo} setTodos={setTodos}/>
         ))}
-      </div>
+      </div>    
     </main>
-  )
+ )
 }
 
-export default App
+export default App;
