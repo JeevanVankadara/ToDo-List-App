@@ -31,15 +31,17 @@ const App = () => {
 
   return (
     <main className='container'>
-      <h1 className='title'>Awesome ToDos</h1>
+      <h1 className='title'>Bunny ToDos</h1>
       <form className='form' onSubmit={createTodo}>
         <input type="text" placeholder='Enter the todo...' value={content}  onChange={(e)=>(setContent(e.target.value))} className='form_input' required/>
         <button className='form_button' type='submit' >Create</button>
       </form>
       <div className='todos'>
       {todos.length > 0 &&
-        todos.map((todo) => (
-          <Todo todo={todo} setTodos={setTodos}/>
+        todos
+          .sort((a, b) => a.status - b.status) 
+          .map((todo) => (
+            <Todo key={todo._id} todo={todo} setTodos={setTodos}/>
         ))}
       </div>    
     </main>

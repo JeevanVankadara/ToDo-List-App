@@ -12,12 +12,14 @@ const Todo = (props) => {
             },
         });
 
-        const updatedTodos = await res.json();
-        setTodos(currentTodos =>
-            currentTodos.map(currentTodo =>
-                currentTodo._id === id ? { ...currentTodo, status: !currentTodo.status } : currentTodo
-            )
-        );
+        if (res.ok) {
+            const updatedTodo = await res.json();
+            setTodos(currentTodos =>
+                currentTodos.map(currentTodo =>
+                    currentTodo._id === id ? updatedTodo : currentTodo
+                )
+            );
+        }
     }
 
     const deleteTask=async(id)=>{
@@ -33,7 +35,8 @@ const Todo = (props) => {
     }
     return (
         <div key={todo._id} className="todo">
-            <p>{todo.todo}</p>
+            <p className={todo.status ? "completed" : ""}>{todo.todo}</p>
+            
             <div className="mutations">
                 <button
                     className="todo_status"
