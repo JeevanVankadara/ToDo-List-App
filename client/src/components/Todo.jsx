@@ -4,7 +4,7 @@ const Todo = (props) => {
     const { todo, setTodos } = props;
 
     async function statusUpdate(id, currentStatus) {
-        const res = await fetch(`http://localhost:5000/api/todos/${id}`, {
+        const res = await fetch(`https://jeevan-to-do-list-app.vercel.app/api/todos/${id}`, {
             method: "PUT",
             body: JSON.stringify({ status: !currentStatus }),
             headers: {
@@ -23,7 +23,7 @@ const Todo = (props) => {
     }
 
     const deleteTask=async(id)=>{
-        const res=await fetch(`http://localhost:5000/api/todos/${id}`,{
+        const res=await fetch(`https://jeevan-to-do-list-app.vercel.app/api/todos/${id}`,{
             method:"DELETE",
         })
 
