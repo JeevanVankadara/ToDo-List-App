@@ -7,7 +7,7 @@ const App = () => {
 
   useEffect(()=>{
     async function getTodos(){
-      const res=await fetch("http://localhost:5000/api/todos");
+      const res=await fetch("https://jeevan-to-do-list-app.vercel.app/api/todos");
       const todos=await res.json();
       setTodos(todos);
     }
@@ -16,7 +16,7 @@ const App = () => {
 
   const createTodo=async(e)=>{
     e.preventDefault();
-    const res=await fetch("http://localhost:5000/api/todos",{
+    const res=await fetch("https://jeevan-to-do-list-app.vercel.app/api/todos",{
       method:"POST",
       body:JSON.stringify({todo:content}),
       headers:{
