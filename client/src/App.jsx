@@ -10,7 +10,7 @@ const App = () => {
 
   useEffect(()=>{
     async function getTodos(){
-  const res=await fetch(`${API_URL}/api/todos`);
+      const res=await fetch(`${API_URL}/api/todos`);
       const todos=await res.json();
       setTodos(todos);
     }
@@ -19,7 +19,7 @@ const App = () => {
 
   const createTodo=async(e)=>{
     e.preventDefault();
-  const res=await fetch(`${API_URL}/api/todos`,{
+    const res=await fetch(`${API_URL}/api/todos`,{
       method:"POST",
       body:JSON.stringify({todo:content}),
       headers:{
