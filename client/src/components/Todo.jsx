@@ -1,10 +1,13 @@
 import React from "react";
 
+// Use Vite environment variable for API URL in production (set VITE_API_URL in Vercel)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Todo = (props) => {
     const { todo, setTodos } = props;
 
     async function statusUpdate(id, currentStatus) {
-        const res = await fetch(`http://localhost:5000/api/todos/${id}`, {
+    const res = await fetch(`${API_URL}/api/todos/${id}`, {
             method: "PUT",
             body: JSON.stringify({ status: !currentStatus }),
             headers: {
@@ -23,7 +26,7 @@ const Todo = (props) => {
     }
 
     const deleteTask=async(id)=>{
-        const res=await fetch(`http://localhost:5000/api/todos/${id}`,{
+    const res=await fetch(`${API_URL}/api/todos/${id}`,{
             method:"DELETE",
         })
 

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Todo from './components/Todo'; 
 
+// Use Vite environment variable for API URL in production (set VITE_API_URL in Vercel)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const App = () => {
   const [todos,setTodos]=useState([]);
   const [content,setContent]=useState("");
 
   useEffect(()=>{
     async function getTodos(){
-      const res=await fetch("http://localhost:5000/api/todos");
+  const res=await fetch(`${API_URL}/api/todos`);
       const todos=await res.json();
       setTodos(todos);
     }
@@ -16,7 +19,7 @@ const App = () => {
 
   const createTodo=async(e)=>{
     e.preventDefault();
-    const res=await fetch("http://localhost:5000/api/todos",{
+  const res=await fetch(`${API_URL}/api/todos`,{
       method:"POST",
       body:JSON.stringify({todo:content}),
       headers:{
